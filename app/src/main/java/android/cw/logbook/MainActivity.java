@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 binding.url.setText(list.get(count).getImageURL());
             }
         });
-        binding.btnDownload.setOnClickListener(new View.OnClickListener() {
+        binding.btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String url = binding.url.getText().toString();
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 Picasso.get().load(url).into(binding.image);
-                getLastLocation();
+                getCurrentLocation();
                 ImageUploadInfo imageUploadInfo = new ImageUploadInfo(binding.txtAddress.getText().toString(), url);
                 databaseRef.push().setValue(imageUploadInfo);
                 binding.url.setText("");
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void getLastLocation() {
+    private void getCurrentLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             fusedLocationProviderClient.getLastLocation()
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLastLocation();
+                getCurrentLocation();
             } else {
                 Toast.makeText(this, "Required Permission", Toast.LENGTH_SHORT).show();
             }
@@ -213,9 +213,9 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 assert data != null;
                 binding.iconCamera.setImageBitmap((Bitmap) data.getExtras().get("data"));
-                getLastLocation();
+                getCurrentLocation();
                 saveImage();
-                uploadImage(bitmapToByte((Bitmap) data.getExtras().get("data")));
+                uploadImage(convertBitMapToByte((Bitmap) data.getExtras().get("data")));
             }
         }
     }
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private byte[] bitmapToByte(Bitmap bitmap) {
+    private byte[] convertBitMapToByte(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] bytes = stream.toByteArray();
