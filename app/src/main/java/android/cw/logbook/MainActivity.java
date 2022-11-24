@@ -161,16 +161,16 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            askPermission();
+            requestPermission();
         }
     }
 
-    private void askPermission() {
+    private void requestPermission() {
         ActivityCompat.requestPermissions(MainActivity.this, new String[]
                 {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
     }
 
-    private void askCameraPermission() {
+    private void requestCameraPermission() {
         ActivityCompat.requestPermissions(MainActivity.this, new String[]
                 {Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
     }
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, REQUEST_CODE_CAMERA);
         } else {
-            askCameraPermission();
+            requestCameraPermission();
         }
     }
 
